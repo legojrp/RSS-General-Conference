@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>General Conference RSS</title>
+  <title>General Conference RSS Feed</title>
   <style>
     :root{--bg:#0f1724;--card:#111827;--accent:#60a5fa;--muted:#9ca3af;color-scheme:dark}
     body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg,#071029 0%,#081223 100%);color:#e6eef8;display:flex;align-items:center;justify-content:center;height:100vh}
@@ -19,14 +19,15 @@
 </head>
 <body>
   <div class="card">
-    <h1>General Conference — Daily RSS</h1>
-    <p>Subscribe to a daily General Conference talk. This feed publishes one random talk each day selected from the past 10 years using the Open Scripture API.</p>
+    <h1>General Conference RSS Feed</h1>
+    <p>This is the main home page for the RSS feed. It publishes one random General Conference talk each day selected from the past 10 years using the Open Scripture API.</p>
     <div class="feed">
       <input class="copy" id="feedurl" value="{{ feed_url }}" readonly style="flex:1" />
       <button class="btn" id="copyBtn">Copy Feed URL</button>
       <a class="btn" href="{{ feed_url }}" target="_blank" rel="noopener">Open Feed</a>
     </div>
     <p style="margin-top:12px">The feed is served at <span class="link">{{ feed_url }}</span>. Add it to your reader (Feedly, NewsBlur, or any RSS client).</p>
+    <p>Open Scripture API docs: <a href="{{ openscripture_url }}" class="link" target="_blank" rel="noopener">General Conference API</a></p>
     <footer>Project on <a href="{{ github_url }}" class="link" target="_blank" rel="noopener">GitHub</a></footer>
   </div>
 

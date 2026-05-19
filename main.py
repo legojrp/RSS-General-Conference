@@ -106,7 +106,7 @@ def select_next_talk():
 def make_rss(item):
     fg = FeedGenerator()
     fg.title("General Conference Daily")
-    fg.link(href="https://www.openscriptureapi.org", rel="alternate")
+    fg.link(href="https://ldsrss.patchindustries.com", rel="alternate")
     fg.description("A daily General Conference article")
     fg.language("en")
 
@@ -156,9 +156,15 @@ def feed():
 
 @app.route("/")
 def index():
-        github_url = os.environ.get("GITHUB_URL", "https://github.com/legojrp/RSS-General-Conference")
-        feed_url = os.environ.get("FEED_URL", "https://ldsrss.patchindustries.com/feed.xml")
-        return render_template("index.html", feed_url=feed_url, github_url=github_url)
+    github_url = os.environ.get("GITHUB_URL", "https://github.com/legojrp/RSS-General-Conference")
+    feed_url = os.environ.get("FEED_URL", "https://ldsrss.patchindustries.com/feed.xml")
+    openscripture_url = "https://www.openscriptureapi.org/docs/general-conference"
+    return render_template(
+        "index.html",
+        feed_url=feed_url,
+        github_url=github_url,
+        openscripture_url=openscripture_url,
+    )
 
 
 def start_scheduler():
