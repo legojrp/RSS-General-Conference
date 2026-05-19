@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>General Conference RSS</title>
+  <style>
+    :root{--bg:#0f1724;--card:#111827;--accent:#60a5fa;--muted:#9ca3af;color-scheme:dark}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg,#071029 0%,#081223 100%);color:#e6eef8;display:flex;align-items:center;justify-content:center;height:100vh}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:28px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.6);max-width:820px;width:92%}
+    h1{margin:0 0 8px;font-size:22px}
+    p{margin:8px 0;color:var(--muted)}
+    .feed{display:flex;gap:8px;align-items:center;margin-top:14px}
+    .btn{background:var(--accent);color:#07203a;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600}
+    a.link{color:#9bd1ff}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    .copy{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:#cfe9ff}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>General Conference — Daily RSS</h1>
+    <p>Subscribe to a daily General Conference talk. This feed publishes one random talk each day selected from the past 10 years using the Open Scripture API.</p>
+    <div class="feed">
+      <input class="copy" id="feedurl" value="{{ feed_url }}" readonly style="flex:1" />
+      <button class="btn" id="copyBtn">Copy Feed URL</button>
+      <a class="btn" href="{{ feed_url }}" target="_blank" rel="noopener">Open Feed</a>
+    </div>
+    <p style="margin-top:12px">The feed is served at <span class="link">{{ feed_url }}</span>. Add it to your reader (Feedly, NewsBlur, or any RSS client).</p>
+    <footer>Project on <a href="{{ github_url }}" class="link" target="_blank" rel="noopener">GitHub</a></footer>
+  </div>
+
+  <script>
+    document.getElementById('copyBtn').addEventListener('click', async function(){
+      try{
+        await navigator.clipboard.writeText(document.getElementById('feedurl').value);
+        alert('Feed URL copied to clipboard');
+      }catch(e){
+        const el = document.getElementById('feedurl');
+        el.select();
+        document.execCommand('copy');
+        alert('Feed URL copied to clipboard');
+      }
+    });
+  </script>
+</body>
+</html>

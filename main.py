@@ -4,7 +4,7 @@ import logging
 from datetime import datetime
 
 import requests
-from flask import Flask, Response
+from flask import Flask, Response, render_template
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 import pytz
@@ -152,6 +152,13 @@ def feed():
         return Response("", status=204)
     rss = make_rss(item)
     return Response(rss, mimetype="application/rss+xml; charset=utf-8")
+
+
+@app.route("/")
+def index():
+        github_url = os.environ.get("GITHUB_URL", "https://github.com/legojrp/RSS-General-Conference")
+        feed_url = os.environ.get("FEED_URL", "https://ldsrss.patchindustries.com/feed.xml")
+        return render_template("index.html", feed_url=feed_url, github_url=github_url)
 
 
 def start_scheduler():
