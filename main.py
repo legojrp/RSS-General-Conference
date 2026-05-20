@@ -11,7 +11,8 @@ import pytz
 from feedgen.feed import FeedGenerator
 
 API_BASE = "https://www.openscriptureapi.org/api/conference/v1/lds/en"
-DATA_FILE = os.path.join(os.path.dirname(__file__), "gc_data.json")
+BASE_DATA_FILE = os.path.join(os.path.dirname(__file__), "gc_data.json")
+RUNTIME_DATA_FILE = os.environ.get("GC_DATA_FILE", os.path.join("/tmp", "gc_data.json"))
 DEFAULT_TIMEZONE = "America/New_York"
 
 logging.basicConfig(level=logging.INFO)
@@ -20,23 +21,34 @@ log = logging.getLogger("gc-rss")
 app = Flask(__name__)
 
 
+def get_data_file():
+    if os.path.exists(RUNTIME_DATA_FILE):
+        return RUNTIME_DATA_FILE
+    if os.access(os.path.dirname(BASE_DATA_FILE) or ".", os.W_OK):
+        return BASE_DATA_FILE
+    return RUNTIME_DATA_FILE
+
+
 def load_data():
-    if os.path.exists(DATA_FILE):
-        try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            log.exception("Failed to load data file")
+    for path in (get_data_file(), BASE_DATA_FILE):
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception:
+                log.exception("Failed to load data file: %s", path)
     return {"talk_ids": [], "index": 0, "current": None}
 
 
 def save_data(d):
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
+    data_file = get_data_file()
+    os.makedirs(os.path.dirname(data_file), exist_ok=True)
+    with open(data_file, "w", encoding="utf-8") as f:
         json.dump(d, f, ensure_ascii=False, indent=2)
 
 
 def get_local_timezone():
-    tz_name = os.environ.get("TZ", DEFAULT_TIMEZONE)
+    tz_name = os.environ.get("TZ", DEFAULT_TIMEZONE).lstrip(":") or DEFAULT_TIMEZONE
     try:
         return pytz.timezone(tz_name)
     except Exception:
