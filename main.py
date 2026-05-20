@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import random
 from datetime import datetime
 
 import requests
@@ -194,9 +195,9 @@ def select_next_talk():
         if not data.get("talk_ids"):
             log.warning("No talk ids available to select")
             return
-        index = data.get("index", 0) % len(data["talk_ids"])
-        talk_id = data["talk_ids"][index]
-        log.info("Selected talk candidate %s at index %d of %d", talk_id, index, len(data["talk_ids"]))
+        talk_id = random.choice(data["talk_ids"])
+        index = data["talk_ids"].index(talk_id)
+        log.info("Randomly selected talk candidate %s at index %d of %d", talk_id, index, len(data["talk_ids"]))
         talk = fetch_talk(talk_id)
         api_url = f"{API_BASE}/talk/{talk_id}"
         data["current"] = {
@@ -209,7 +210,7 @@ def select_next_talk():
             "api_url": api_url,
             "content": talk.get("content", {}),
         }
-        data["index"] = (index + 1) % len(data["talk_ids"])
+        data["index"] = (data.get("index", 0) + 1) % len(data["talk_ids"])
         data["last_updated"] = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
         save_data(data)
         log_feed_state("Selected talk saved", data)
