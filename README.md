@@ -22,5 +22,6 @@ python main.py
 
 Notes
 
-- The app builds a talk index from the Open Scripture API and rotates through talks daily.
-- The scheduler uses the `TZ` environment variable if set; otherwise UTC is used. To run in your local timezone, set `TZ` before starting.
+- The app builds a talk index from the Open Scripture API and rotates through talks daily in order.
+- Each RSS item links to the API talk endpoint and includes the conference session and speaker in its title.
+- The scheduler uses the `TZ` environment variable if set; otherwise America/New_York is used. To run in another timezone, set `TZ` before starting.
