@@ -295,7 +295,7 @@ def feed():
         item.get("api_url"),
     )
     rss = make_rss(item)
-    return Response(rss, mimetype="application/rss+xml; charset=utf-8")
+    return Response(rss, mimetype="application/xml; charset=utf-8")
 
 
 @app.route("/")
